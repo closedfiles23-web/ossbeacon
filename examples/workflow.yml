@@ -11,7 +11,7 @@ jobs:
   signal:
     runs-on: ubuntu-latest
     steps:
-      - uses: closedfiles23-web/ossbeacon@v0.1.0
+      - uses: closedfiles23-web/ossbeacon@v0.2.0
         with:
           github-token: ${{ github.token }}
           use-ai: 'false'
