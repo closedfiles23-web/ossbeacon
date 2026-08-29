@@ -24,7 +24,7 @@ function required(flags, name) {
 }
 
 function printHelp() {
-  console.log(`OSSBeacon 0.1.0\n\nCommands:\n  analyze-pr    --repo owner/name --pr 123 [--ai] [--json]\n  triage-issue  --repo owner/name --issue 42 [--ai] [--json]\n  release-notes --repo owner/name --from v1.0.0 --to v1.1.0 [--ai] [--json]\n  doctor\n  demo\n\nOutput:\n  --json             Emit the stable OSSBeacon report schema\n\nEnvironment:\n  GITHUB_TOKEN       Recommended for private repos and higher GitHub API limits\n  OPENAI_API_KEY     Required only with --ai\n  OSSBEACON_MODEL    Optional model override\n`);
+  console.log(`OSSBeacon 0.2.0\n\nCommands:\n  analyze-pr    --repo owner/name --pr 123 [--ai] [--json]\n  triage-issue  --repo owner/name --issue 42 [--ai] [--json]\n  release-notes --repo owner/name --from v1.0.0 --to v1.1.0 [--ai] [--json]\n  doctor\n  demo\n\nOutput:\n  --json             Emit the stable OSSBeacon report schema\n\nEnvironment:\n  GITHUB_TOKEN       Recommended for private repos and higher GitHub API limits\n  OPENAI_API_KEY     Required only with --ai\n  OSSBEACON_MODEL    Optional model override\n`);
 }
 
 async function doctor() {
