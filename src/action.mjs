@@ -1,7 +1,7 @@
 import { readFile, appendFile } from 'node:fs/promises';
 import { loadConfig } from './config.mjs';
 import { analyzePr } from './commands.mjs';
-import { postIssueComment } from './github.mjs';
+import { upsertOssBeaconComment } from './github.mjs';
 
 async function main() {
   if (!process.env.GITHUB_EVENT_PATH) throw new Error('GITHUB_EVENT_PATH is unavailable.');
@@ -17,7 +17,7 @@ async function main() {
   const result = await analyzePr({ repo, number, config, ai: useAi });
   console.log(result.markdown);
   if (process.env.GITHUB_STEP_SUMMARY) await appendFile(process.env.GITHUB_STEP_SUMMARY, `${result.markdown}\n`, 'utf8');
-  if (/^true$/i.test(process.env.OSSBEACON_COMMENT || 'false')) await postIssueComment(repo, number, result.markdown);
+  if (/^true$/i.test(process.env.OSSBEACON_COMMENT || 'false')) await upsertOssBeaconComment(repo, number, result.markdown);
 }
 
 main().catch(error => { console.error(`OSSBeacon action failed: ${error.message}`); process.exitCode = 1; });
