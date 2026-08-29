@@ -7,7 +7,7 @@
     "sensitivePatterns": [".github/workflows/", "auth", "security", "migration", "package.json", "schema"]
   },
   "ai": {
-    "model": "gpt-5.4",
+    "model": "gpt-5.6-terra",
     "maxFiles": 80
   }
 }

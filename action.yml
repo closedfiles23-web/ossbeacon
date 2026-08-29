@@ -18,7 +18,7 @@ inputs:
   model:
     description: Optional OpenAI model override.
     required: false
-    default: 'gpt-5.4'
+    default: 'gpt-5.6-terra'
   comment:
     description: Set true to post the report as a PR comment.
     required: false

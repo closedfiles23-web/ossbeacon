@@ -1,0 +1,18 @@
+name: OSSBeacon PR signal
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  signal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: closedfiles23-web/ossbeacon@v0.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          use-ai: 'false'
+          comment: 'false'
