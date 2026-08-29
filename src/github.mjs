@@ -1,5 +1,7 @@
 const API = 'https://api.github.com';
 
+export const OSSBEACON_COMMENT_MARKER = '<!-- ossbeacon:pr-report:v1 -->';
+
 function repoParts(repo) {
   const match = /^([^/]+)\/([^/]+)$/.exec(repo ?? '');
   if (!match) throw new Error('Repository must use owner/name format.');
@@ -60,6 +62,19 @@ async function requestArrayPages(path, token, { perPage = 100, maxItems = 1000 }
   return { items, truncated };
 }
 
+export function formatOssBeaconComment(body) {
+  return `${OSSBEACON_COMMENT_MARKER}\n${String(body || '').trim()}\n`;
+}
+
+export function findOssBeaconComment(comments = []) {
+  for (let index = comments.length - 1; index >= 0; index -= 1) {
+    const comment = comments[index];
+    const body = String(comment?.body || '');
+    if (body === OSSBEACON_COMMENT_MARKER || body.startsWith(`${OSSBEACON_COMMENT_MARKER}\n`)) return comment;
+  }
+  return null;
+}
+
 export async function getPullRequest(repo, number, token = process.env.GITHUB_TOKEN, maxFiles = 1000) {
   const [owner, name] = repoParts(repo);
   const pr = await request(`/repos/${owner}/${name}/pulls/${Number(number)}`, token);
@@ -89,4 +104,33 @@ export async function postIssueComment(repo, number, body, token = process.env.G
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ body })
   });
+}
+
+export async function upsertOssBeaconComment(repo, number, body, token = process.env.GITHUB_TOKEN) {
+  if (!token) throw new Error('GITHUB_TOKEN is required to manage comments.');
+  const [owner, name] = repoParts(repo);
+  const issueNumber = Number(number);
+  const { items: comments } = await requestArrayPages(
+    `/repos/${owner}/${name}/issues/${issueNumber}/comments`,
+    token,
+    { maxItems: 5000 }
+  );
+  const markedBody = formatOssBeaconComment(body);
+  const existing = findOssBeaconComment(comments);
+
+  if (existing?.id) {
+    const comment = await request(`/repos/${owner}/${name}/issues/comments/${Number(existing.id)}`, token, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ body: markedBody })
+    });
+    return { action: 'updated', comment };
+  }
+
+  const comment = await request(`/repos/${owner}/${name}/issues/${issueNumber}/comments`, token, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ body: markedBody })
+  });
+  return { action: 'created', comment };
 }
