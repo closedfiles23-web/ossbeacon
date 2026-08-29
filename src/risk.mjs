@@ -2,6 +2,8 @@ function normalized(path) { return String(path || '').toLowerCase(); }
 
 export function scorePullRequest(pr, files = [], config) {
   const changedLines = Number(pr?.additions || 0) + Number(pr?.deletions || 0);
+  const reportedFileCount = Number(pr?.changed_files || 0);
+  const filesChanged = Math.max(files.length, Number.isFinite(reportedFileCount) ? reportedFileCount : 0);
   const factors = [];
   let score = 0;
 
@@ -13,8 +15,8 @@ export function scorePullRequest(pr, files = [], config) {
     score += 10; factors.push(`Moderate change size: ${changedLines} lines`);
   }
 
-  if (files.length >= 40) { score += 20; factors.push(`${files.length} files changed`); }
-  else if (files.length >= 15) { score += 10; factors.push(`${files.length} files changed`); }
+  if (filesChanged >= 40) { score += 20; factors.push(`${filesChanged} files changed`); }
+  else if (filesChanged >= 15) { score += 10; factors.push(`${filesChanged} files changed`); }
 
   const sensitive = [];
   for (const file of files) {
@@ -40,7 +42,7 @@ export function scorePullRequest(pr, files = [], config) {
   else if (score >= config.risk.mediumThreshold) level = 'medium';
 
   return {
-    score, level, changedLines, filesChanged: files.length,
+    score, level, changedLines, filesChanged,
     sensitiveFiles: sensitive, testFiles: testFiles.map(f => f.filename), factors
   };
 }
