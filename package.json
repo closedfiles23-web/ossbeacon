@@ -1,6 +1,6 @@
 {
   "name": "ossbeacon",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Open-source maintainer cockpit for PR risk analysis, issue triage, and release notes.",
   "type": "module",
   "engines": { "node": ">=20" },

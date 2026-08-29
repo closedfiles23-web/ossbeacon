@@ -12,7 +12,7 @@ function headers(token) {
   return {
     Accept: 'application/vnd.github+json',
     'X-GitHub-Api-Version': '2022-11-28',
-    'User-Agent': 'ossbeacon/0.1.0',
+    'User-Agent': 'ossbeacon/0.2.0',
     ...(token ? { Authorization: `Bearer ${token}` } : {})
   };
 }
