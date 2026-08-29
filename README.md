@@ -82,6 +82,18 @@ ossbeacon release-notes --repo owner/project --from v1.0.0 --to v1.1.0
 
 Conventional Commit prefixes are grouped into features, fixes, docs, maintenance, and other changes.
 
+## Stable JSON reports
+
+Add `--json` to any maintainer command to emit the versioned OSSBeacon report contract rather than internal GitHub API payloads.
+
+```bash
+ossbeacon analyze-pr --repo owner/project --pr 123 --json
+ossbeacon triage-issue --repo owner/project --issue 42 --json
+ossbeacon release-notes --repo owner/project --from v1.0.0 --to v1.1.0 --json
+```
+
+Reports include `schemaVersion` and `reportType`. The v1 contract, compatibility policy, and privacy guarantees are documented in [docs/REPORT_SCHEMA.md](docs/REPORT_SCHEMA.md), with a formal JSON Schema at [schemas/report-v1.schema.json](schemas/report-v1.schema.json).
+
 ## GitHub Action
 
 After this project has a stable tag, repositories can use the action like this:

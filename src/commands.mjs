@@ -4,6 +4,7 @@ import { triageIssue } from './triage.mjs';
 import { buildReleaseNotes } from './release.mjs';
 import { askOpenAI } from './openai.mjs';
 import { prMarkdown, issueMarkdown, releaseMarkdown } from './format.mjs';
+import { buildPullRequestReport, buildIssueReport, buildReleaseReport } from './report.mjs';
 
 export async function analyzePr({ repo, number, config, ai = false }) {
   const { pr, files, filesTruncated } = await getPullRequest(repo, number, undefined, config.github.maxPrFiles);
@@ -20,7 +21,9 @@ export async function analyzePr({ repo, number, config, ai = false }) {
       input: JSON.stringify({ title: pr.title, body: pr.body, additions: pr.additions, deletions: pr.deletions, files: compactFiles, heuristic: analysis })
     });
   }
-  return { pr, files, analysis, markdown: prMarkdown(repo, number, pr, analysis, aiText), aiText };
+  const markdown = prMarkdown(repo, number, pr, analysis, aiText);
+  const report = buildPullRequestReport({ repo, number, pr, files, analysis, aiText });
+  return { pr, files, analysis, report, markdown, aiText };
 }
 
 export async function triage({ repo, number, config, ai = false }) {
@@ -34,7 +37,9 @@ export async function triage({ repo, number, config, ai = false }) {
       input: JSON.stringify({ title: issue.title, body: issue.body, heuristic: result })
     });
   }
-  return { issue, triage: result, markdown: issueMarkdown(repo, number, issue, result, aiText), aiText };
+  const markdown = issueMarkdown(repo, number, issue, result, aiText);
+  const report = buildIssueReport({ repo, number, issue, triage: result, aiText });
+  return { issue, triage: result, report, markdown, aiText };
 }
 
 export async function releaseNotes({ repo, from, to, config, ai = false }) {
@@ -48,5 +53,7 @@ export async function releaseNotes({ repo, from, to, config, ai = false }) {
       input: JSON.stringify(notes)
     });
   }
-  return { compare, notes, markdown: releaseMarkdown(repo, from, to, notes, aiText), aiText };
+  const markdown = releaseMarkdown(repo, from, to, notes, aiText);
+  const report = buildReleaseReport({ repo, from, to, notes, aiText });
+  return { compare, notes, report, markdown, aiText };
 }
