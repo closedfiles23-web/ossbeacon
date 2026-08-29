@@ -57,7 +57,9 @@ OSSBeacon is designed as a review signal, not as an autonomous merge or rejectio
 
 ## 3. Optional PR comment
 
-If you want the report in the pull-request conversation, change the permission and input:
+Duplicate-free managed PR comments were added after `v0.1.0` and are currently available on the development `main` branch. The stable `v0.1.0` baseline above intentionally keeps `comment: 'false'` because that release can post a new comment on each run.
+
+Once a tagged release includes managed comment updates, enabling them requires pull-request write permission and `comment: 'true'`:
 
 ```yaml
 permissions:
@@ -65,14 +67,13 @@ permissions:
   pull-requests: write
 
 # ...
-      - uses: closedfiles23-web/ossbeacon@v0.1.0
         with:
           github-token: ${{ github.token }}
           use-ai: 'false'
           comment: 'true'
 ```
 
-OSSBeacon marks its own report and updates that marked comment on later runs instead of editing unrelated human or bot comments.
+The managed-comment implementation marks its own report and updates that marked comment on later runs instead of editing unrelated human or bot comments.
 
 ### Fork safety
 
@@ -80,7 +81,7 @@ GitHub commonly restricts write permissions for workflows triggered by pull requ
 
 Do not switch to `pull_request_target` and then check out or execute untrusted contributor code just to obtain a write token. If you design a separate privileged commenting workflow, keep untrusted code out of that privileged execution path.
 
-The OSSBeacon repository's self-review workflow demonstrates a middle ground: it never checks out PR code, always runs the trusted Action from the repository's `main` branch, and only attempts to post a comment for same-repository branches. Fork PRs still get the workflow summary.
+The OSSBeacon repository's self-review workflow demonstrates a middle ground during development: it never checks out PR code, always runs the trusted Action from the repository's `main` branch, and only attempts to post a comment for same-repository branches. Fork PRs still get the workflow summary.
 
 ## 4. Optional AI summary
 
