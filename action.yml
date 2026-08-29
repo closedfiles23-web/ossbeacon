@@ -6,7 +6,7 @@ branding:
   color: blue
 inputs:
   github-token:
-    description: GitHub token used to read PR metadata and optionally comment.
+    description: GitHub token used to read PR metadata and optionally manage the OSSBeacon PR comment.
     required: true
   use-ai:
     description: Set true to request an OpenAI maintainer summary.
@@ -20,7 +20,7 @@ inputs:
     required: false
     default: 'gpt-5.6-terra'
   comment:
-    description: Set true to post the report as a PR comment.
+    description: Set true to create or update the OSSBeacon report comment on the PR.
     required: false
     default: 'false'
 runs:
