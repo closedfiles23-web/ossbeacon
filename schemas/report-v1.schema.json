@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/closedfiles23-web/ossbeacon/blob/main/schemas/report-v1.schema.json",
+  "title": "OSSBeacon Report v1",
+  "oneOf": [
+    { "$ref": "#/$defs/pullRequestReport" },
+    { "$ref": "#/$defs/issueReport" },
+    { "$ref": "#/$defs/releaseReport" }
+  ],
+  "$defs": {
+    "ai": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["generated", "summary"],
+      "properties": {
+        "generated": { "type": "boolean" },
+        "summary": { "type": ["string", "null"] }
+      }
+    },
+    "releaseItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sha", "message", "author"],
+      "properties": {
+        "sha": { "type": "string" },
+        "message": { "type": "string" },
+        "author": { "type": "string" }
+      }
+    },
+    "pullRequestReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "reportType", "repository", "subject", "result", "ai"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "reportType": { "const": "pull-request" },
+        "repository": { "type": "string" },
+        "subject": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["number", "title", "url", "draft"],
+          "properties": {
+            "number": { "type": "number" },
+            "title": { "type": "string" },
+            "url": { "type": ["string", "null"] },
+            "draft": { "type": "boolean" }
+          }
+        },
+        "result": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["risk", "changes", "sensitiveFiles", "testFiles", "factors", "checklist"],
+          "properties": {
+            "risk": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["score", "level"],
+              "properties": {
+                "score": { "type": "number", "minimum": 0, "maximum": 100 },
+                "level": { "enum": ["low", "medium", "high"] }
+              }
+            },
+            "changes": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["lines", "files", "analyzedFiles", "truncated"],
+              "properties": {
+                "lines": { "type": "number", "minimum": 0 },
+                "files": { "type": "number", "minimum": 0 },
+                "analyzedFiles": { "type": "number", "minimum": 0 },
+                "truncated": { "type": "boolean" }
+              }
+            },
+            "sensitiveFiles": { "type": "array", "items": { "type": "string" } },
+            "testFiles": { "type": "array", "items": { "type": "string" } },
+            "factors": { "type": "array", "items": { "type": "string" } },
+            "checklist": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "ai": { "$ref": "#/$defs/ai" }
+      }
+    },
+    "issueReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "reportType", "repository", "subject", "result", "ai"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "reportType": { "const": "issue-triage" },
+        "repository": { "type": "string" },
+        "subject": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["number", "title", "url"],
+          "properties": {
+            "number": { "type": "number" },
+            "title": { "type": "string" },
+            "url": { "type": ["string", "null"] }
+          }
+        },
+        "result": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["primary", "labels", "priority", "confidence", "evidence"],
+          "properties": {
+            "primary": { "type": "string" },
+            "labels": { "type": "array", "items": { "type": "string" } },
+            "priority": { "type": "string" },
+            "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["label", "hits"],
+                "properties": {
+                  "label": { "type": "string" },
+                  "hits": { "type": "array", "items": { "type": "string" } }
+                }
+              }
+            }
+          }
+        },
+        "ai": { "$ref": "#/$defs/ai" }
+      }
+    },
+    "releaseReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "reportType", "repository", "subject", "result", "ai"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "reportType": { "const": "release-notes" },
+        "repository": { "type": "string" },
+        "subject": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["from", "to"],
+          "properties": {
+            "from": { "type": "string" },
+            "to": { "type": "string" }
+          }
+        },
+        "result": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["totalCommits", "filesChanged", "additions", "deletions", "groups"],
+          "properties": {
+            "totalCommits": { "type": "number", "minimum": 0 },
+            "filesChanged": { "type": "number", "minimum": 0 },
+            "additions": { "type": "number", "minimum": 0 },
+            "deletions": { "type": "number", "minimum": 0 },
+            "groups": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["features", "fixes", "docs", "maintenance", "other"],
+              "properties": {
+                "features": { "type": "array", "items": { "$ref": "#/$defs/releaseItem" } },
+                "fixes": { "type": "array", "items": { "$ref": "#/$defs/releaseItem" } },
+                "docs": { "type": "array", "items": { "$ref": "#/$defs/releaseItem" } },
+                "maintenance": { "type": "array", "items": { "$ref": "#/$defs/releaseItem" } },
+                "other": { "type": "array", "items": { "$ref": "#/$defs/releaseItem" } }
+              }
+            }
+          }
+        },
+        "ai": { "$ref": "#/$defs/ai" }
+      }
+    }
+  }
+}
