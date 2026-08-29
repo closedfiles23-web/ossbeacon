@@ -1,5 +1,8 @@
 # 🛰️ OSSBeacon
 
+[![CI](https://github.com/closedfiles23-web/ossbeacon/actions/workflows/ci.yml/badge.svg)](https://github.com/closedfiles23-web/ossbeacon/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/closedfiles23-web/ossbeacon/actions/workflows/codeql.yml/badge.svg)](https://github.com/closedfiles23-web/ossbeacon/actions/workflows/codeql.yml)
+
 **A lightweight open-source maintainer cockpit for pull-request risk, issue triage, and release notes.**
 
 OSSBeacon helps maintainers answer three repetitive questions quickly:
@@ -10,7 +13,7 @@ OSSBeacon helps maintainers answer three repetitive questions quickly:
 
 It works with deterministic local heuristics by default. OpenAI summaries are optional and explicitly opt-in.
 
-> **Status:** early public beta, v0.1.0. The project is intentionally small, dependency-free, auditable, and contributor-friendly.
+> **Status:** early public beta, stable release `v0.1.0`. The project is intentionally small, dependency-free, auditable, and contributor-friendly. OSSBeacon also dogfoods the current `main` branch on its own pull requests.
 
 ## Why OSSBeacon?
 
@@ -22,6 +25,14 @@ Maintainers spend a surprising amount of time routing attention rather than writ
 - 🔐 **Privacy-conscious:** AI mode sends compact metadata, not arbitrary repository source files.
 - 🧩 **Zero runtime dependencies:** Node.js 20+ is enough.
 - ⚙️ **GitHub Action ready:** put the report in your workflow summary, optionally comment on PRs.
+
+## Try it on a real repository
+
+The lowest-risk first trial is read-only, AI-off, and pinned to the stable release. Copy [`examples/workflow.yml`](examples/workflow.yml) into your repository as `.github/workflows/ossbeacon.yml`.
+
+That baseline uses `pull-requests: read`, does not require an OpenAI key, and writes the report to the GitHub Actions job summary. If the signal is useful, you can later enable a managed PR comment, tune repository-specific risk rules, or opt into AI.
+
+For the complete progression, including fork safety and least-privilege permissions, see **[Adopting OSSBeacon](docs/ADOPTION.md)**.
 
 ## Quick start
 
@@ -96,7 +107,7 @@ Reports include `schemaVersion` and `reportType`. The v1 contract, compatibility
 
 ## GitHub Action
 
-After this project has a stable tag, repositories can use the action like this:
+External repositories should pin the stable release:
 
 ```yaml
 name: OSSBeacon
@@ -106,7 +117,7 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
+  pull-requests: read
 
 jobs:
   review-signal:
@@ -114,7 +125,7 @@ jobs:
     steps:
       - uses: closedfiles23-web/ossbeacon@v0.1.0
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ github.token }}
           use-ai: 'false'
           comment: 'false'
 ```
@@ -124,6 +135,14 @@ When `comment: 'true'` is enabled, OSSBeacon adds a hidden marker to its own PR 
 For least privilege, use `pull-requests: read` when comments are disabled. Creating or updating the OSSBeacon PR comment requires `pull-requests: write`. `contents: read` is sufficient for the Action's repository access.
 
 To enable AI, store an OpenAI API key as a repository secret and pass it to `openai-api-key`. Do not place API keys in workflow files.
+
+## Dogfooding
+
+OSSBeacon analyzes its own pull requests through [`.github/workflows/ossbeacon.yml`](.github/workflows/ossbeacon.yml). That workflow deliberately uses the trusted Action from `@main`, keeps AI disabled, and does not check out or execute pull-request code.
+
+For same-repository branches it can maintain one OSSBeacon PR comment. For forked pull requests it leaves commenting disabled and still provides the workflow summary. This lets the project exercise current behavior without making external contributors depend on privileged tokens.
+
+Downstream projects should continue to use the stable release tag rather than copying this development-only `@main` choice.
 
 ## Configuration
 
@@ -158,7 +177,9 @@ See [ROADMAP.md](ROADMAP.md). Near-term work includes duplicate-issue hints, rep
 
 ## Contributing
 
-Contributions are welcome, including docs, tests, rules, provider adapters, UX ideas, and accessibility improvements. Start with [CONTRIBUTING.md](CONTRIBUTING.md) and look for `good first issue` once issues are published.
+Contributions are welcome, including docs, tests, rules, provider adapters, UX ideas, and accessibility improvements. Start with [CONTRIBUTING.md](CONTRIBUTING.md) and check the open issues for a `good first issue` or `help wanted` task.
+
+If you try OSSBeacon on a real repository, feedback about false positives, missing signals, workflow friction, or useful defaults is especially valuable. Never include private repository data, credentials, or undisclosed vulnerability details in public feedback.
 
 ## Security
 
