@@ -5,7 +5,7 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
+  pull-requests: read
 
 jobs:
   signal:
@@ -13,6 +13,6 @@ jobs:
     steps:
       - uses: closedfiles23-web/ossbeacon@v0.1.0
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ github.token }}
           use-ai: 'false'
           comment: 'false'

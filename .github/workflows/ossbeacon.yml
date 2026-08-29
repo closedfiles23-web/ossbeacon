@@ -1,0 +1,25 @@
+name: OSSBeacon self-review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: ossbeacon-self-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  review-signal:
+    name: OSSBeacon self-review
+    runs-on: ubuntu-latest
+    steps:
+      - name: Analyze this pull request
+        uses: closedfiles23-web/ossbeacon@main
+        with:
+          github-token: ${{ github.token }}
+          use-ai: 'false'
+          comment: ${{ github.event.pull_request.head.repo.full_name == github.repository && 'true' || 'false' }}
