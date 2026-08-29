@@ -119,6 +119,10 @@ jobs:
           comment: 'false'
 ```
 
+When `comment: 'true'` is enabled, OSSBeacon adds a hidden marker to its own PR report comment and updates that marked comment on later runs instead of posting duplicates. Unrelated human and bot comments are not edited.
+
+For least privilege, use `pull-requests: read` when comments are disabled. Creating or updating the OSSBeacon PR comment requires `pull-requests: write`. `contents: read` is sufficient for the Action's repository access.
+
 To enable AI, store an OpenAI API key as a repository secret and pass it to `openai-api-key`. Do not place API keys in workflow files.
 
 ## Configuration
