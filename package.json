@@ -1,0 +1,18 @@
+{
+  "name": "ossbeacon",
+  "version": "0.1.0",
+  "description": "Open-source maintainer cockpit for PR risk analysis, issue triage, and release notes.",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "bin": { "ossbeacon": "./src/cli.mjs" },
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check src/cli.mjs && node --check src/action.mjs && node --test",
+    "demo": "node src/cli.mjs demo"
+  },
+  "keywords": ["open-source", "github", "maintainer", "pull-request", "triage", "release-notes", "ai"],
+  "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/closedfiles23-web/ossbeacon.git" },
+  "bugs": { "url": "https://github.com/closedfiles23-web/ossbeacon/issues" },
+  "homepage": "https://github.com/closedfiles23-web/ossbeacon#readme"
+}

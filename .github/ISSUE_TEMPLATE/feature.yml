@@ -1,0 +1,23 @@
+name: Feature request
+description: Propose an improvement for maintainers.
+title: "feat: "
+labels: [enhancement, needs-triage]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Maintainer problem
+      description: What repetitive or difficult maintenance task are you trying to improve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: tradeoffs
+    attributes:
+      label: Tradeoffs
+      description: Consider false positives, permissions, privacy, dependencies, and API cost.

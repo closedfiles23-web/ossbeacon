@@ -1,0 +1,13 @@
+{
+  "risk": {
+    "highThreshold": 70,
+    "mediumThreshold": 35,
+    "largeChangeLines": 600,
+    "veryLargeChangeLines": 1500,
+    "sensitivePatterns": [".github/workflows/", "auth", "security", "migration", "package.json", "schema"]
+  },
+  "ai": {
+    "model": "gpt-5.4",
+    "maxFiles": 80
+  }
+}

@@ -1,0 +1,37 @@
+name: OSSBeacon PR Review Signal
+description: Heuristic PR risk analysis with optional OpenAI maintainer summary.
+author: OSSBeacon contributors
+branding:
+  icon: radio
+  color: blue
+inputs:
+  github-token:
+    description: GitHub token used to read PR metadata and optionally comment.
+    required: true
+  use-ai:
+    description: Set true to request an OpenAI maintainer summary.
+    required: false
+    default: 'false'
+  openai-api-key:
+    description: OpenAI API key. Required only when use-ai is true.
+    required: false
+  model:
+    description: Optional OpenAI model override.
+    required: false
+    default: 'gpt-5.4'
+  comment:
+    description: Set true to post the report as a PR comment.
+    required: false
+    default: 'false'
+runs:
+  using: composite
+  steps:
+    - name: Run OSSBeacon
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+        OSSBEACON_USE_AI: ${{ inputs.use-ai }}
+        OSSBEACON_MODEL: ${{ inputs.model }}
+        OSSBEACON_COMMENT: ${{ inputs.comment }}
+      run: node "$GITHUB_ACTION_PATH/src/action.mjs"
