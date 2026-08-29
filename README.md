@@ -30,7 +30,7 @@ Maintainers spend a surprising amount of time routing attention rather than writ
 
 The lowest-risk first trial is read-only, AI-off, and pinned to the stable release. Copy [`examples/workflow.yml`](examples/workflow.yml) into your repository as `.github/workflows/ossbeacon.yml`.
 
-That baseline uses `pull-requests: read`, does not require an OpenAI key, and writes the report to the GitHub Actions job summary. If the signal is useful, you can later enable a managed PR comment, tune repository-specific risk rules, or opt into AI.
+That baseline uses `pull-requests: read`, does not require an OpenAI key, and writes the report to the GitHub Actions job summary. If the signal is useful, you can later tune repository-specific risk rules or opt into AI. Duplicate-free managed PR comments are already on the development `main` branch and will ship in a later tagged release.
 
 For the complete progression, including fork safety and least-privilege permissions, see **[Adopting OSSBeacon](docs/ADOPTION.md)**.
 
@@ -130,9 +130,9 @@ jobs:
           comment: 'false'
 ```
 
-When `comment: 'true'` is enabled, OSSBeacon adds a hidden marker to its own PR report comment and updates that marked comment on later runs instead of posting duplicates. Unrelated human and bot comments are not edited.
+The stable `v0.1.0` baseline above intentionally keeps comments disabled. Duplicate-free managed comments, which mark and update only OSSBeacon's own report while leaving unrelated comments untouched, were added after `v0.1.0` and are currently available on `main` for development testing. They should be enabled by downstream projects after a tagged release includes that behavior.
 
-For least privilege, use `pull-requests: read` when comments are disabled. Creating or updating the OSSBeacon PR comment requires `pull-requests: write`. `contents: read` is sufficient for the Action's repository access.
+For least privilege, use `pull-requests: read` when comments are disabled. Creating or updating an OSSBeacon PR comment requires `pull-requests: write`. `contents: read` is sufficient for the Action's repository access.
 
 To enable AI, store an OpenAI API key as a repository secret and pass it to `openai-api-key`. Do not place API keys in workflow files.
 
