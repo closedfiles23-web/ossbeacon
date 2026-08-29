@@ -6,8 +6,10 @@ import { askOpenAI } from './openai.mjs';
 import { prMarkdown, issueMarkdown, releaseMarkdown } from './format.mjs';
 
 export async function analyzePr({ repo, number, config, ai = false }) {
-  const { pr, files } = await getPullRequest(repo, number);
+  const { pr, files, filesTruncated } = await getPullRequest(repo, number, undefined, config.github.maxPrFiles);
   const analysis = scorePullRequest(pr, files, config);
+  analysis.truncated = filesTruncated;
+  if (filesTruncated) analysis.factors.push(`Changed-file analysis truncated at ${files.length} files`);
   analysis.checklist = reviewChecklist(analysis);
   let aiText = '';
   if (ai) {

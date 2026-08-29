@@ -1,6 +1,9 @@
 import { readFile } from 'node:fs/promises';
 
 export const DEFAULT_CONFIG = Object.freeze({
+  github: {
+    maxPrFiles: 1000
+  },
   risk: {
     highThreshold: 70,
     mediumThreshold: 35,

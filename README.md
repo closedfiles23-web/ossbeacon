@@ -111,10 +111,13 @@ To enable AI, store an OpenAI API key as a repository secret and pass it to `ope
 
 ## Configuration
 
-Copy `.ossbeacon.example.json` to `.ossbeacon.json` and adjust thresholds or sensitive path patterns.
+Copy `.ossbeacon.example.json` to `.ossbeacon.json` and adjust thresholds, sensitive path patterns, or GitHub retrieval limits.
 
 ```json
 {
+  "github": {
+    "maxPrFiles": 1000
+  },
   "risk": {
     "highThreshold": 70,
     "mediumThreshold": 35,
@@ -122,6 +125,8 @@ Copy `.ossbeacon.example.json` to `.ossbeacon.json` and adjust thresholds or sen
   }
 }
 ```
+
+`github.maxPrFiles` is a safety cap. OSSBeacon paginates changed files up to that limit and clearly warns when a larger PR is intentionally truncated.
 
 ## Design principles
 

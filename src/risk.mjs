@@ -47,6 +47,7 @@ export function scorePullRequest(pr, files = [], config) {
 
 export function reviewChecklist(analysis) {
   const items = [];
+  if (analysis.truncated) items.push('Review changed files beyond the configured OSSBeacon analysis cap manually.');
   if (analysis.sensitiveFiles.length) items.push('Verify permission, security, workflow, dependency, or data-model changes carefully.');
   if (analysis.factors.some(x => x.includes('without obvious test'))) items.push('Ask whether regression tests should cover the changed behavior.');
   if (analysis.changedLines >= 600) items.push('Consider splitting the PR if independent changes can be reviewed separately.');

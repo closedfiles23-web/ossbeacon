@@ -1,4 +1,7 @@
 {
+  "github": {
+    "maxPrFiles": 1000
+  },
   "risk": {
     "highThreshold": 70,
     "mediumThreshold": 35,
