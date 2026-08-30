@@ -109,6 +109,20 @@ Copy `.ossbeacon.example.json` to `.ossbeacon.json` if the defaults are not enou
 
 Keep the first configuration small. A transparent rule you understand is more useful than a giant policy file nobody trusts.
 
+## 6. Share what happened
+
+Real adoption feedback matters more than synthetic popularity. After trying OSSBeacon on representative pull requests, use the dedicated [Adoption feedback form](https://github.com/closedfiles23-web/ossbeacon/issues/new?template=adoption.yml) to report:
+
+- which mode you used;
+- what signal was useful;
+- false positives, false negatives, or missing signals;
+- setup, permissions, or fork friction;
+- an optional public repository link.
+
+A public repository is never presented as an OSSBeacon adoption example without explicit permission from the person submitting it. Do not share private repository data, tokens, credentials, or undisclosed vulnerability details.
+
+If OSSBeacon genuinely helps your workflow, starring the repository is an optional way to make the project easier for other maintainers to discover. A star is not treated as proof that the tool worked; concrete adoption feedback is more useful.
+
 ## What successful first adoption looks like
 
 A healthy first trial does not need stars, AI, or automation everywhere. A useful milestone is simpler:
@@ -119,4 +133,4 @@ A healthy first trial does not need stars, AI, or automation everywhere. A usefu
 4. The project keeps human review authority.
 5. The workflow does not require unnecessary permissions or secrets.
 
-If OSSBeacon is useful on a real project, feedback is welcome through GitHub Issues. Public examples are especially helpful, but never post private repository data, tokens, or vulnerability details just to provide feedback.
+If OSSBeacon is useful on a real project, feedback is welcome through the dedicated adoption form. Public examples are especially helpful when permission is granted, but never post private repository data, credentials, or vulnerability details just to provide feedback.

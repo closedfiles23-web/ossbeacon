@@ -32,7 +32,7 @@ The lowest-risk first trial is read-only, AI-off, and pinned to the stable relea
 
 That baseline uses `pull-requests: read`, does not require an OpenAI key, and writes the report to the GitHub Actions job summary. If the signal is useful, you can later enable a duplicate-free managed PR comment, tune repository-specific risk rules, or opt into AI.
 
-For the complete progression, including fork safety and least-privilege permissions, see **[Adopting OSSBeacon](docs/ADOPTION.md)**.
+For the complete progression, including fork safety and least-privilege permissions, see **[Adopting OSSBeacon](docs/ADOPTION.md)**. After a real trial, **[share an adoption report](https://github.com/closedfiles23-web/ossbeacon/issues/new?template=adoption.yml)** with useful signals, false positives, missing signals, or setup friction.
 
 ## Quick start
 
@@ -179,7 +179,7 @@ See [ROADMAP.md](ROADMAP.md). Near-term work includes duplicate-issue hints, rep
 
 Contributions are welcome, including docs, tests, rules, provider adapters, UX ideas, and accessibility improvements. Start with [CONTRIBUTING.md](CONTRIBUTING.md) and check the open issues for a `good first issue` or `help wanted` task.
 
-If you try OSSBeacon on a real repository, feedback about false positives, missing signals, workflow friction, or useful defaults is especially valuable. Never include private repository data, credentials, or undisclosed vulnerability details in public feedback.
+If you try OSSBeacon on a real repository, feedback about false positives, missing signals, workflow friction, or useful defaults is especially valuable. Use the **[Adoption feedback form](https://github.com/closedfiles23-web/ossbeacon/issues/new?template=adoption.yml)** so the report is easy to compare with other trials. Public repository examples are referenced only with explicit permission. Never include private repository data, credentials, or undisclosed vulnerability details in public feedback.
 
 ## Security
 
