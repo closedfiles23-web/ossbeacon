@@ -1,5 +1,5 @@
 name: OSSBeacon PR Review Signal
-description: Heuristic PR risk analysis with optional OpenAI maintainer summary.
+description: Explainable PR risk analysis and review checklist with optional OpenAI maintainer summary.
 author: OSSBeacon contributors
 branding:
   icon: radio
