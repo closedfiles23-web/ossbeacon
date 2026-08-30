@@ -13,7 +13,7 @@ OSSBeacon helps maintainers answer three repetitive questions quickly:
 
 It works with deterministic local heuristics by default. OpenAI summaries are optional and explicitly opt-in.
 
-> **Status:** early public beta, stable release `v0.1.0`. The project is intentionally small, dependency-free, auditable, and contributor-friendly. OSSBeacon also dogfoods the current `main` branch on its own pull requests.
+> **Status:** early public beta, stable release `v0.2.0`. The project is intentionally small, dependency-free, auditable, and contributor-friendly. OSSBeacon also dogfoods the current `main` branch on its own pull requests.
 
 ## Why OSSBeacon?
 
@@ -30,7 +30,7 @@ Maintainers spend a surprising amount of time routing attention rather than writ
 
 The lowest-risk first trial is read-only, AI-off, and pinned to the stable release. Copy [`examples/workflow.yml`](examples/workflow.yml) into your repository as `.github/workflows/ossbeacon.yml`.
 
-That baseline uses `pull-requests: read`, does not require an OpenAI key, and writes the report to the GitHub Actions job summary. If the signal is useful, you can later tune repository-specific risk rules or opt into AI. Duplicate-free managed PR comments are already on the development `main` branch and will ship in a later tagged release.
+That baseline uses `pull-requests: read`, does not require an OpenAI key, and writes the report to the GitHub Actions job summary. If the signal is useful, you can later enable a duplicate-free managed PR comment, tune repository-specific risk rules, or opt into AI.
 
 For the complete progression, including fork safety and least-privilege permissions, see **[Adopting OSSBeacon](docs/ADOPTION.md)**.
 
@@ -123,14 +123,14 @@ jobs:
   review-signal:
     runs-on: ubuntu-latest
     steps:
-      - uses: closedfiles23-web/ossbeacon@v0.1.0
+      - uses: closedfiles23-web/ossbeacon@v0.2.0
         with:
           github-token: ${{ github.token }}
           use-ai: 'false'
           comment: 'false'
 ```
 
-The stable `v0.1.0` baseline above intentionally keeps comments disabled. Duplicate-free managed comments, which mark and update only OSSBeacon's own report while leaving unrelated comments untouched, were added after `v0.1.0` and are currently available on `main` for development testing. They should be enabled by downstream projects after a tagged release includes that behavior.
+Stable `v0.2.0` includes duplicate-free managed PR comments. When `comment: 'true'` is enabled, OSSBeacon marks its own report and updates that marked comment on later runs instead of posting duplicates or editing unrelated human and bot comments.
 
 For least privilege, use `pull-requests: read` when comments are disabled. Creating or updating an OSSBeacon PR comment requires `pull-requests: write`. `contents: read` is sufficient for the Action's repository access.
 
