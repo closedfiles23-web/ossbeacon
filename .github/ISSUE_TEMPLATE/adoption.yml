@@ -1,0 +1,61 @@
+name: Adoption feedback
+description: Tell us how OSSBeacon behaved on a real repository.
+title: "[Adoption] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for trying OSSBeacon on a real project. Concrete feedback helps us tune the heuristics without pretending that stars or synthetic benchmarks equal maintainer value.
+
+        Do not include tokens, private repository data, or undisclosed vulnerability details.
+
+  - type: input
+    id: repository
+    attributes:
+      label: Public repository (optional)
+      description: Link the repository only if it is public and you are comfortable sharing it.
+      placeholder: https://github.com/owner/project
+
+  - type: dropdown
+    id: mode
+    attributes:
+      label: How did you run OSSBeacon?
+      options:
+        - Read-only workflow summary
+        - Managed PR comment
+        - Optional AI summary
+        - CLI
+        - More than one mode
+    validations:
+      required: true
+
+  - type: textarea
+    id: useful
+    attributes:
+      label: What was useful?
+      description: Tell us what signal changed or confirmed where you focused review attention.
+      placeholder: The report correctly highlighted...
+    validations:
+      required: true
+
+  - type: textarea
+    id: noise
+    attributes:
+      label: What was noisy or missing?
+      description: False positives, false negatives, confusing wording, missing paths, or unhelpful defaults are especially useful.
+      placeholder: I expected OSSBeacon to notice...
+
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Setup or workflow friction
+      description: Tell us about permissions, fork behavior, configuration, documentation, or installation problems.
+      placeholder: Setup was easy except for...
+
+  - type: checkboxes
+    id: permission
+    attributes:
+      label: Public example permission
+      options:
+        - label: If I included a public repository link, OSSBeacon maintainers may reference that repository as a public adoption example.
+          required: false
